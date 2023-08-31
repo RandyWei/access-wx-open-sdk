@@ -1,4 +1,4 @@
-package com.myapplication
+package com.chinahrt.app.shitu
 
 import MainView
 import android.os.Bundle
