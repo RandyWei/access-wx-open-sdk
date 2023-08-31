@@ -1,7 +1,10 @@
 package wechat
 
+import cocoapods.WechatOpenSDK_XCFramework.BaseReq
+import cocoapods.WechatOpenSDK_XCFramework.BaseResp
 import cocoapods.WechatOpenSDK_XCFramework.SendMessageToWXReq
 import cocoapods.WechatOpenSDK_XCFramework.WXApi
+import cocoapods.WechatOpenSDK_XCFramework.WXApiDelegateProtocol
 import cocoapods.WechatOpenSDK_XCFramework.WXLogLevelDetail
 import cocoapods.WechatOpenSDK_XCFramework.WXMediaMessage
 import cocoapods.WechatOpenSDK_XCFramework.WXWebpageObject
@@ -9,7 +12,10 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.allocArrayOf
 import kotlinx.cinterop.memScoped
 import platform.Foundation.NSData
+import platform.Foundation.NSURL
+import platform.Foundation.NSUserActivity
 import platform.Foundation.create
+import platform.darwin.NSObject
 
 actual object OpenSDK {
 
@@ -26,6 +32,30 @@ actual object OpenSDK {
             }
         }
     }
+
+    private val delegate = object : WXApiDelegateProtocol, NSObject() {
+        override fun onReq(req: BaseReq) {
+
+        }
+
+        override fun onResp(resp: BaseResp) {
+            println("====================")
+            println(resp.errStr)
+            println(resp.errCode)
+
+            println("====================")
+
+        }
+    }
+
+    fun handleOpenUrl(url: NSURL): Boolean {
+        return WXApi.handleOpenURL(url, delegate)
+    }
+
+    fun handleOpenUniversalLink(userActivity: NSUserActivity): Boolean {
+        return WXApi.handleOpenUniversalLink(userActivity, delegate)
+    }
+
 
     @OptIn(ExperimentalForeignApi::class)
     actual fun shareUrl(
