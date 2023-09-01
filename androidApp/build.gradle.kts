@@ -43,6 +43,15 @@ android {
         }
     }
 
+    buildTypes {
+        getByName("release"){
+            signingConfig = signingConfigs.getByName("release")
+        }
+        getByName("debug"){
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
